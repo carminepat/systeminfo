@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 
@@ -15,7 +14,7 @@ import lombok.Getter;
  * information about operating system
  *
  * @author carminepat@gmail.com
- * 
+ *
  */
 @Getter
 public class Os {
@@ -72,78 +71,62 @@ public class Os {
         return "";
     }
 
+    /**
+     * serial number of OS (operating system)
+     * @return String
+     */
     private String initSerialNumber() {
         if (isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic os get serialNumber")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("SERIALNUMBER", "")
-                    .trim();
-            return result;
+            String element = "serialNumber";
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic os get " + element), element.toUpperCase());
         } else if (isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[S|s]erial\\s+[N|n]umber.*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String sn = matcher.group(0);
-                sn = sn.substring(sn.indexOf(":") + 1).trim();
-                return sn;
-            }
+            String regex = "[S|s]erial\\s+[N|n]umber.*";
+            return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
         }
         return "";
     }
 
+    /**
+     * UUID of hardware of machine
+     * @return String
+     */
     private String initHardwareUUID() {
         if (isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic csproduct get UUID")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("UUID", "")
-                    .trim();
-            return result;
+            String element = "UUID";
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic csproduct get " + element), element);
         } else if (isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[H|h]ardware\\s+[UUID|uuid].*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String hu = matcher.group(0);
-                hu = hu.substring(hu.indexOf(":") + 1).trim();
-                return hu;
-            }
+            String regex = "[H|h]ardware\\s+[UUID|uuid].*";
+            return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
         }
         return "";
     }
 
+    /**
+     * date about last boot time
+     * @return String
+     */
     private String initLastBootTime() {
         if (isWindows()) {
             try {
-                String result = CommandLine.i().getResultOfExecution("wmic os get lastBootUpTime")
-                        .replaceAll("\r\n", " ")
-                        .replace("\\s{2,}", " ")
-                        .toUpperCase()
-                        .replace("lastBootUpTime", "")
-                        .trim();
-                result = result.replaceAll("\\.\\d+.*", "");
-                Date d = new SimpleDateFormat("yyyyMMddHHmmss").parse(result);
-                return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(d);
-            } catch (Exception e) {
-                System.err.println("Error formatting date" + e);
-            }
-        } else if (isMac()) {
-            try {
-                String result = CommandLine.i().getResultOfExecution("system_profiler SPDiagnosticsDataType");
-                Pattern p = Pattern.compile("[L|l]ast\\s+[R|r]un.*", Pattern.MULTILINE);
-                Matcher matcher = p.matcher(result);
-                if (matcher.find()) {
-                    String lr = matcher.group(0);
-                    lr = lr.substring(lr.indexOf(":") + 1).trim();
-                    Date d = new SimpleDateFormat("dd/MM/yy, HH:mm").parse(lr);
+                String element = "lastBootUpTime";
+                String result = CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic os get " + element), element.toUpperCase());
+                if (result != null && !"".equals(result)) {
+                    Date d = new SimpleDateFormat("yyyyMMddHHmmss").parse(result);
                     return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(d);
                 }
             } catch (Exception e) {
-                System.err.println("Error formatting date" + e);
+                System.err.println("Error formatting date " + e);
+            }
+        } else if (isMac()) {
+            try {
+                String regex = "[L|l]ast\\s+[R|r]un.*";
+                String result = CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPDiagnosticsDataType"), regex, Pattern.MULTILINE);
+                if (result != null && !"".equals(result)) {
+                    Date d = new SimpleDateFormat("dd/MM/yy, HH:mm").parse(result);
+                    return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(d);
+                }
+            } catch (Exception e) {
+                System.err.println("Error formatting date " + e);
             }
         }
         return "";

@@ -7,6 +7,7 @@ import lombok.Getter;
 
 /**
  * information about CPU
+ *
  * @author carminepat@gmail.com
  */
 @Getter
@@ -50,43 +51,35 @@ public class Cpu {
 
     private String initProcessorSpeed() {
         if (Os.i().isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic cpu get MaxClockSpeed")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("MAXCLOCKSPEED", "")
-                    .trim();
-            return result;
+            String element = "MaxClockSpeed";
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu get " + element), element.toUpperCase());
         } else if (Os.i().isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[P|p]rocessor\\s+[S|s]peed.*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String sn = matcher.group(0);
-                sn = sn.substring(sn.indexOf(":") + 1).trim();
-                return sn;
-            }
+            String regex = "[P|p]rocessor\\s+[S|s]peed.*";
+            return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
         }
         return "";
     }
 
     private int initNumberOfCores() {
         if (Os.i().isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic cpu get NumberOfCores")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("NUMBEROFCORES", "")
-                    .trim();
-            return Integer.parseInt(result);
+            String element = "NumberOfCores";
+            String result = CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu get " + element), element.toUpperCase());
+            if (result != null && !"".equals(result)) {
+                try {
+                    return Integer.parseInt(result);
+                } catch (Exception e) {
+                    System.err.println("Not parseable integer " + result + ". Error: " + e);
+                }
+            }
         } else if (Os.i().isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[N|n]umber\\s+of\\s+[C|c]ores.*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String sn = matcher.group(0);
-                sn = sn.substring(sn.indexOf(":") + 1).trim();
-                return Integer.parseInt(sn);
+            String regex = "[N|n]umber\\s+of\\s+[C|c]ores.*";
+            String result = CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
+            if (result != null && !"".equals(result)) {
+                try {
+                    return Integer.parseInt(result);
+                } catch (Exception e) {
+                    System.err.println("Not parseable integer " + result + ". Error: " + e);
+                }
             }
         }
         return 0;
@@ -94,21 +87,24 @@ public class Cpu {
 
     private int initNumberOfProcessors() {
         if (Os.i().isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic cpu get﻿NumberOfLogicalProcessors")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("NUMBEROFLOGICALPROCESSORS", "")
-                    .trim();
-            return Integer.parseInt(result);
+            String element = "NumberOfLogicalProcessors";
+            String result = CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu get﻿ " + element), element.toUpperCase());
+            if (result != null && !"".equals(result)) {
+                try {
+                    return Integer.parseInt(result);
+                } catch (Exception e) {
+                    System.err.println("Not integer parseable " + result + ". Error: " + e);
+                }
+            }
         } else if (Os.i().isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[N|n]umber\\s+of\\s+[P|p]rocessors.*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String sn = matcher.group(0);
-                sn = sn.substring(sn.indexOf(":") + 1).trim();
-                return Integer.parseInt(sn);
+            String regex = "[N|n]umber\\s+of\\s+[P|p]rocessors.*";
+            String result = CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
+            if (result != null && !"".equals(result)) {
+                try {
+                    return Integer.parseInt(result);
+                } catch (Exception e) {
+                    System.err.println("Not integer parseable " + result + ". Error: " + e);
+                }
             }
         }
         return 0;
@@ -116,44 +112,22 @@ public class Cpu {
 
     private String initL3cache() {
         if (Os.i().isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic cpu L3CacheSize")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("L3CACHESIZE", "")
-                    .trim();
-            return result;
+            String element = "L3CacheSize";
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu " + element), element.toUpperCase());
         } else if (Os.i().isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[L|l]3\\s+[C|c]ache.*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String sn = matcher.group(0);
-                sn = sn.substring(sn.indexOf(":") + 1).trim();
-                return sn;
-            }
+            String regex = "[L|l]3\\s+[C|c]ache.*";
+            return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
         }
         return "";
     }
 
     private String initL2cache() {
         if (Os.i().isWindows()) {
-            String result = CommandLine.i().getResultOfExecution("wmic cpu L2CacheSize")
-                    .replaceAll("\r\n", " ")
-                    .replace("\\s{2,}", " ")
-                    .toUpperCase()
-                    .replace("L2CACHESIZE", "")
-                    .trim();
-            return result;
+            String element = "L2CacheSize";
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu " + element), element.toUpperCase());
         } else if (Os.i().isMac()) {
-            String result = CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType");
-            Pattern p = Pattern.compile("[L|l]2\\s+[C|c]ache.*", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(result);
-            if (matcher.find()) {
-                String sn = matcher.group(0);
-                sn = sn.substring(sn.indexOf(":") + 1).trim();
-                return sn;
-            }
+            String regex = "[L|l]2\\s+[C|c]ache.*";
+            return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
         }
         return "";
     }
