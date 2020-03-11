@@ -1,6 +1,8 @@
 package it.carminepat.systeminfo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.carminepat.systeminfo.utils.CommandLine;
+import it.carminepat.systeminfo.utils.Converter;
 import it.carminepat.systeminfo.utils.win.WinSystemInfoCache;
 import java.util.regex.Pattern;
 import lombok.Getter;
@@ -13,12 +15,24 @@ import lombok.Getter;
 @Getter
 public class Memory {
 
-    private String physicalTotalInstalled;
-    private String physicalFree;
-    private String physicalInUse;
-    private String virtualTotalInstalled;
-    private String virtualFree;
-    private String virtualInUse;
+    private String physicalTotalInstalled = "0";
+    @JsonIgnore
+    private long physicalTotalInstalledL = 0;
+    private String physicalFree = "0";
+    @JsonIgnore
+    private long physicalFreeL = 0;
+    private String physicalInUse = "0";
+    @JsonIgnore
+    private long physicalInUseL = 0;
+    private String virtualTotalInstalled = "0";
+    @JsonIgnore
+    private long virtualTotalInstalledL = 0;
+    private String virtualFree = "0";
+    @JsonIgnore
+    private long virtualFreeL = 0;
+    private String virtualInUse = "0";
+    @JsonIgnore
+    private long virtualInUseL = 0;
 
     private static Memory instance = null;
 
@@ -30,61 +44,68 @@ public class Memory {
     }
 
     private Memory() {
-        this.physicalTotalInstalled = this.initPhysicalTotalInstalled();
-        this.physicalFree = this.initPhysicalFree();
-        this.virtualTotalInstalled = this.initVirtualTotalInstalled();
-        this.virtualFree = this.initVirtualFree();
-        this.virtualInUse = this.initVirtualInUse();
+        this.initPhysicalTotalInstalled();
+        this.initPhysicalFree();
+        this.initVirtualTotalInstalled();
+        this.initVirtualFree();
+        this.initVirtualInUse();
     }
 
-    private String initPhysicalTotalInstalled() {
+    private void initPhysicalTotalInstalled() {
         if (Os.i().isWindows()) {
             String regex = "[M|m]emoria\\s+[F|f]isica\\s+[T|t]otale\\:.*";
-            return CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            String result = CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            this.physicalTotalInstalledL = Converter.i().convertUnitSizeToByte(result);
+            this.physicalTotalInstalled = Converter.i().readableFileSize(this.physicalTotalInstalledL);
         } else if (Os.i().isMac()) {
             String regEx = "[M|m]emory\\:\\s+.*";
-            return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regEx, Pattern.MULTILINE);
+            CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regEx, Pattern.MULTILINE);
         }
-        return "";
     }
 
-    private String initPhysicalFree() {
+    private void initPhysicalFree() {
         if (Os.i().isWindows()) {
             String regex = "[M|m]emoria\\s+[F|f]isica\\s+[D|d]isponibile\\:.*";
-            return CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            String result = CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            this.physicalFreeL = Converter.i().convertUnitSizeToByte(result);
+            this.physicalInUseL = this.physicalTotalInstalledL - this.physicalFreeL;
+            this.physicalFree = Converter.i().readableFileSize(this.physicalFreeL);
+            this.physicalInUse = Converter.i().readableFileSize(this.physicalInUseL);
         } else if (Os.i().isMac()) {
 
         }
-        return "";
     }
 
-    private String initVirtualTotalInstalled() {
+    private void initVirtualTotalInstalled() {
         if (Os.i().isWindows()) {
             String regex = "[M|m]emoria\\s+[V|v]irtuale\\:\\s+[D|d]imensione\\s+[M|m]assima\\:.*";
-            return CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            String result = CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            this.virtualTotalInstalledL = Converter.i().convertUnitSizeToByte(result);
+            this.virtualTotalInstalled = Converter.i().readableFileSize(this.virtualTotalInstalledL);
         } else if (Os.i().isMac()) {
 
         }
-        return "";
     }
 
-    private String initVirtualFree() {
+    private void initVirtualFree() {
         if (Os.i().isWindows()) {
             String regex = "[M|m]emoria\\s+[V|v]irtuale\\:\\s+[D|d]isponibile\\:.*";
-            return CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            String result = CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            this.virtualFreeL = Converter.i().convertUnitSizeToByte(result);
+            this.virtualFree = Converter.i().readableFileSize(this.virtualFreeL);
         } else if (Os.i().isMac()) {
 
         }
-        return "";
     }
 
-    private String initVirtualInUse() {
+    private void initVirtualInUse() {
         if (Os.i().isWindows()) {
             String regex = "[M|m]emoria\\s+[V|v]irtuale\\:\\s+[I|i]n\\s+[U|u]so\\:.*";
-            return CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            String result = CommandLine.i().clearResultMac(WinSystemInfoCache.i().getSystemInfo(), regex, Pattern.MULTILINE);
+            this.virtualInUseL = Converter.i().convertUnitSizeToByte(result);
+            this.virtualInUse = Converter.i().readableFileSize(this.virtualInUseL);
         } else if (Os.i().isMac()) {
 
         }
-        return "";
     }
 }
