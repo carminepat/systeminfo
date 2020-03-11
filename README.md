@@ -18,12 +18,13 @@ All object is ready for json format translation.
     System.out.println(jsonOs);
 
 ## Information
- 1. Os
- 2. CPU
- 3. Memory (incomplete)
+ 1. Os (mac,windows)
+ 2. CPU (mac,windows)
+ 3. Memory (windows)
  4. Net (not-implemented-yet)
  5. Disk (not-implemented-yet)
  6. Services (not-implemented-yet)
+ 7. Process (not-implemented-yet)
 
 ## Os information
 ####  (json format)
@@ -56,5 +57,16 @@ All object is ready for json format translation.
 	"numberOfCores":4,  
 	"l3cache":"8 MB",  
 	"l2cache":"256 KB"  
+	}
+## Memory information
+#### (json format)
+
+    {
+	"physicalTotalInstalled":"8 GB",  
+	"physicalFree":"3 GB",  
+	"physicalInUse":"5 GB",  
+	"virtualTotalInstalled":"10 GB",  
+	"virtualFree":"1 GB",  
+	"virtualInUse":"8 GB"  
 	}
 
