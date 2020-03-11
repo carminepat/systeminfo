@@ -1,7 +1,6 @@
 package it.carminepat.systeminfo;
 
 import it.carminepat.systeminfo.utils.CommandLine;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 
@@ -113,7 +112,7 @@ public class Cpu {
     private String initL3cache() {
         if (Os.i().isWindows()) {
             String element = "L3CacheSize";
-            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu " + element), element.toUpperCase());
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu get " + element), element.toUpperCase());
         } else if (Os.i().isMac()) {
             String regex = "[L|l]3\\s+[C|c]ache.*";
             return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);
@@ -124,7 +123,7 @@ public class Cpu {
     private String initL2cache() {
         if (Os.i().isWindows()) {
             String element = "L2CacheSize";
-            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu " + element), element.toUpperCase());
+            return CommandLine.i().clearResultWindows(CommandLine.i().getResultOfExecution("wmic cpu get " + element), element.toUpperCase());
         } else if (Os.i().isMac()) {
             String regex = "[L|l]2\\s+[C|c]ache.*";
             return CommandLine.i().clearResultMac(CommandLine.i().getResultOfExecution("system_profiler SPHardwareDataType"), regex, Pattern.MULTILINE);

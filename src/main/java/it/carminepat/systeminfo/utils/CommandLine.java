@@ -60,7 +60,7 @@ public class CommandLine {
         Matcher matcher = p.matcher(result);
         if (matcher.find()) {
             String sn = matcher.group(0);
-            sn = sn.substring(sn.indexOf(":") + 1).trim();
+            sn = sn.substring(sn.lastIndexOf(":") + 1).trim();
             return sn;
         }
         return "";
