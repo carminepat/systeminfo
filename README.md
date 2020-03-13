@@ -22,7 +22,7 @@ All object is ready for json format translation.
  2. CPU (mac,windows)
  3. Memory (windows)
  4. Net (not-implemented-yet)
- 5. Disk (not-implemented-yet)
+ 5. Disk (windows)
  6. Services (not-implemented-yet)
  7. Process (not-implemented-yet)
 
@@ -62,11 +62,31 @@ All object is ready for json format translation.
 #### (json format)
 
     {
-	"physicalTotalInstalled":"8 GB",  
-	"physicalFree":"3 GB",  
-	"physicalInUse":"5 GB",  
-	"virtualTotalInstalled":"10 GB",  
-	"virtualFree":"1 GB",  
-	"virtualInUse":"8 GB"  
+	"physicalTotalInstalled":"7,90 GB",  
+	"physicalFree":"1,93 GB",  
+	"physicalInUse":"5,97 GB",  
+	"virtualTotalInstalled":"12,61 GB",  
+	"virtualFree":"1,52 GB",  
+	"virtualInUse":"11,08 GB"  
 	}
 
+## Disk information
+#### (json format)
+
+	{"disks":[{
+	"name":"C:",  
+	"volumeName":"ABSTRACT",  
+	"serial":"XXXX0000",  
+	"description":"DISCO RIGIDO LOCALE",  
+	"fileSystem":"NTFS",  
+	"freeSpace":"5,27 GB",  
+	"size":"47,46 GB"  
+	},{
+	"name":"D:",  
+	"volumeName":null,  
+	"serial":"E229F079",  
+	"description":"DISCO RIMOVIBILE",  
+	"fileSystem":"FAT32",  
+	"freeSpace":"3,52 GB",  
+	"size":"7,48 GB" }]  
+	}
