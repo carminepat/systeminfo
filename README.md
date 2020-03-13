@@ -84,7 +84,7 @@ All object is ready for json format translation.
 	},{
 	"name":"D:",  
 	"volumeName":null,  
-	"serial":"E229F079",  
+	"serial":"XOXOXOXO",  
 	"description":"DISCO RIMOVIBILE",  
 	"fileSystem":"FAT32",  
 	"freeSpace":"3,52 GB",  
