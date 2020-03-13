@@ -24,8 +24,9 @@ public class Converter {
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB", "PB", "EB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         String result = null;
-        long number = Math.round(size / Math.pow(1024, digitGroups));
-        result = new DecimalFormat("#,##0.#").format(number) + " " + units[digitGroups];
+        //long number = Math.round(size / Math.pow(1024, digitGroups));
+        //result = new DecimalFormat("#,##0.#").format(number) + " " + units[digitGroups];
+        result = new DecimalFormat("#,##0.00").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
         return result;
     }
 

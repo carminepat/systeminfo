@@ -19,6 +19,8 @@ public class TestInformation {
         System.out.println(jsonCpu);
         String jsonMemory=mapper.writeValueAsString(Memory.i());
         System.out.println(jsonMemory);
+        String jsonDisk=mapper.writeValueAsString(Disk.i());
+        System.out.println(jsonDisk);        
     }
     
 }
