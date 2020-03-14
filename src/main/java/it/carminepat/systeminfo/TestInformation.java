@@ -21,9 +21,10 @@ public class TestInformation {
 //        System.out.println(jsonMemory);
 //        String jsonDisk=mapper.writeValueAsString(Disk.i());
 //        System.out.println(jsonDisk);      
-        String jsonProcess = mapper.writeValueAsString(Process.i().getProcessByPid(5460));
-        System.out.println(jsonProcess);
-        Process.i().killTask(5460);
+//        String jsonProcess = mapper.writeValueAsString(Process.i().getProcessByPid(5460));
+//        System.out.println(jsonProcess);
+        String jsonServices = mapper.writeValueAsString(Services.i().getListOfServices());
+        System.out.println(jsonServices);
     }
 
 }

@@ -23,7 +23,7 @@ All object is ready for json format translation.
  3. Memory (windows)
  4. Net (not-implemented-yet)
  5. Disk (windows)
- 6. Services (not-implemented-yet)
+ 6. Services (windows)
  7. Process (windows)
 
 ## Os information
@@ -92,7 +92,7 @@ All object is ready for json format translation.
 	}
 ## Process information
 ### getListOfProcess();
-Method Process.i().getListOfProcess(); retourn a List of SingleProcess object.
+Method Process.i().getListOfProcess(); return a List of SingleProcess object.
 This List is ordered by memory use desc.
 SingleProcess object is composed from this property: 
 
@@ -159,3 +159,56 @@ with this method: Process.i().getListOfFirstFiveProcess(); filter first five pro
 with this method: Process.i().getListOfProcessMemoryGTMb(MegaBytesNumber); filter list of process  use great than memory specified in MegaBytes.
 ### killTask(PID)
 with this method: Process.i().killTask(PID); kill process with specified PID
+
+## Service information
+Method Services.i().getListOfServices(); return a List of SingleService object.
+SingleProcess object is composed from this property: 
+
+    boolean acceptStop;
+    String caption;
+    String displayName;
+    String name;
+    String pathName;
+    int PID;
+    boolean started;
+    String startMode;
+    String status;
+    String state;
+
+### getListOfServices()
+
+#### (json format)
+
+    [{
+    "acceptStop":false,  
+    "caption":"Servizio router AllJoyn",  
+    "displayName":"Servizio router AllJoyn",  
+    "name":"AJRouter",  
+    "pathName":"C:\\Windows\\system32\\svchost.exe -k LocalServiceNetworkRestricted -p",  
+    "started":false,  
+    "startMode":"Manual",  
+    "status":"OK",  
+    "state":"Stopped",  
+    "pid":0  
+    },  {
+    "acceptStop":false,  
+    "caption":"Servizio Gateway di livello applicazione",  
+    "displayName":"Servizio Gateway di livello applicazione",  
+    "name":"ALG",  
+    "pathName":"C:\\Windows\\System32\\alg.exe",  
+    "started":false,  
+    "startMode":"Manual",  
+    "status":"OK",  
+    "state":"Stopped",  
+    "pid":0  
+    }, {...} ...]
+### getListOfServicesStopped()
+### getListOfServicesRunning()
+### getListOfServicesAcceptStop()
+### getListOfServicesNotAcceptStop()
+### getServiceByName(String name)
+### getServiceByPID(int PID)
+### startService(String name)
+### stopService(String name)
+### changeStartMode(String name, StartModeType MODE)
+

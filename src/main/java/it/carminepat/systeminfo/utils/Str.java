@@ -52,4 +52,14 @@ public class Str {
         }
         return 0;
     }
+
+    public boolean getBooleanFromString(String s) {
+        boolean isB = false;
+        if (s != null && !"".equals(s)) {
+            if ("TRUE".equals(s.toUpperCase()) || "OK".equals(s.toUpperCase())) {
+                isB = true;
+            }
+        }
+        return isB;
+    }
 }
