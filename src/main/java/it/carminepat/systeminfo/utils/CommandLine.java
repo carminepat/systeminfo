@@ -58,9 +58,7 @@ public class CommandLine {
     }
     
     public String clearResultWindowsWithLine(String result, String element) {
-        result = result.toUpperCase()
-                .replace(element.toUpperCase(), "")
-                .trim();
+        result = result.replace(element, "").trim();
         return result;
     }
     

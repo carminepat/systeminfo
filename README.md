@@ -1,6 +1,6 @@
 ﻿# SystemInfo
 
-Java library for get information about your machine. Information about Operating System, CPU, Memory, Net, Disk, Network and Services
+Java library for get information about your machine. Information about Operating System, CPU, Memory, Net, Disk, Network, Services and Process
 
 
 # getting started
@@ -24,7 +24,7 @@ All object is ready for json format translation.
  4. Net (not-implemented-yet)
  5. Disk (windows)
  6. Services (not-implemented-yet)
- 7. Process (not-implemented-yet)
+ 7. Process (windows)
 
 ## Os information
 ####  (json format)
@@ -90,3 +90,72 @@ All object is ready for json format translation.
 	"freeSpace":"3,52 GB",  
 	"size":"7,48 GB" }]  
 	}
+## Process information
+### getListOfProcess();
+Method Process.i().getListOfProcess(); retourn a List of SingleProcess object.
+This List is ordered by memory use desc.
+SingleProcess object is composed from this property: 
+
+    String name;
+    int pid;
+    String nameSession;
+    int sessionNumber;
+    String momory;
+#### (json format)
+
+    [{
+    "name":"netbeans64.exe",  
+    "pid":11056,  
+    "nameSession":" Console",  
+    "sessionNumber":1,  
+    "momory":"1,21 GB"  
+    },  {
+    "name":"chrome.exe",  
+    "pid":7100,  
+    "nameSession":" Console",  
+    "sessionNumber":1,  
+    "momory":"476,35 MB"  
+    }, {...}, 
+    .
+    .
+    .
+    ]
+
+### getListOfProcessByName("chrome")
+with this method: Process.i().getListOfProcessByName("chrome"); filter process by String "name", for example "chrome". It return List of SingleProcess object.
+#### (json format)
+    [{
+    "name":"chrome.exe",  
+    "pid":7100,  
+    "nameSession":" Console",  
+    "sessionNumber":1,  
+    "momory":"462,08 MB"  
+    },  {
+    "name":"chrome.exe",  
+    "pid":3132,  
+    "nameSession":" Console",  
+    "sessionNumber":1,  
+    "momory":"354,26 MB"  
+    }, {...},
+    .
+    .
+    .
+    ]
+### getProcessByPid(7100)
+with this method: Process.i().getProcessByPid(7100); filter process by his PID. It return an instance of SingleProcess object.
+#### (json format)
+    {
+    "name":"chrome.exe",  
+    "pid":7100,  
+    "nameSession":" Console",  
+    "sessionNumber":1,  
+    "momory":"480,15 MB"  
+    }
+### getListOfProcessByUser("username")
+with this method: Process.i().getListOfProcessByUser("username"); filter process by username.
+### getListOfFirstFiveProcess()
+with this method: Process.i().getListOfFirstFiveProcess(); filter first five process ordered by use of memory desc.
+### getListOfProcessMemoryGTMb(MegaBytesNumber)
+with this method: Process.i().getListOfProcessMemoryGTMb(MegaBytesNumber); filter list of process  use great than memory specified in MegaBytes.
+### killTask(PID)
+with this method: Process.i().killTask(PID); kill process with specified PID

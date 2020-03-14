@@ -51,4 +51,11 @@ public class Converter {
         }
         return 0;
     }
+
+    public long convertMbToKb(long MegaBytes) {
+        if (MegaBytes == 0) {
+            return MegaBytes;
+        }
+        return MegaBytes * 1024;
+    }
 }

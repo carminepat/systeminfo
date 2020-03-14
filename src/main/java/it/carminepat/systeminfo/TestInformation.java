@@ -11,16 +11,19 @@ public class TestInformation {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonOs = mapper.writeValueAsString(Os.i());
-        System.out.println(jsonOs);
-        String jsonCpu=mapper.writeValueAsString(Cpu.i());
-        System.out.println(jsonCpu);
-        String jsonMemory=mapper.writeValueAsString(Memory.i());
-        System.out.println(jsonMemory);
-        String jsonDisk=mapper.writeValueAsString(Disk.i());
-        System.out.println(jsonDisk);        
+//        String jsonOs = mapper.writeValueAsString(Os.i());
+//        System.out.println(jsonOs);
+//        String jsonCpu=mapper.writeValueAsString(Cpu.i());
+//        System.out.println(jsonCpu);
+//        String jsonMemory=mapper.writeValueAsString(Memory.i());
+//        System.out.println(jsonMemory);
+//        String jsonDisk=mapper.writeValueAsString(Disk.i());
+//        System.out.println(jsonDisk);      
+        String jsonProcess = mapper.writeValueAsString(Process.i().getProcessByPid(5460));
+        System.out.println(jsonProcess);
+        Process.i().killTask(5460);
     }
-    
+
 }

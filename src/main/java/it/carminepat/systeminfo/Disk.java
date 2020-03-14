@@ -3,10 +3,8 @@ package it.carminepat.systeminfo;
 import it.carminepat.systeminfo.utils.CommandLine;
 import it.carminepat.systeminfo.utils.Converter;
 import it.carminepat.systeminfo.utils.Str;
-import it.carminepat.systeminfo.utils.win.WinSystemInfoCache;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import lombok.Getter;
 
 /**
@@ -34,7 +32,6 @@ public class Disk {
 
     private ArrayList initDiskWindows() {
         ArrayList<SingleDisk> l = new ArrayList<>();
-        if (Os.i().isWindows()) {
             String[] elements = {"Size", "Name", "VolumeName", "VolumeSerialNumber", "Description", "FileSystem", "FreeSpace"};
             for (String element : elements) {
                 String result = CommandLine.i().clearResultWindowsWithLine(CommandLine.i().getResultOfExecution("wmic logicaldisk get " + element), element);
@@ -83,9 +80,6 @@ public class Disk {
                     }
                 }
             }
-        } else if (Os.i().isMac()) {
-
-        }
         return l;
     }
 
