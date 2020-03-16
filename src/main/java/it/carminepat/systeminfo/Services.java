@@ -28,6 +28,11 @@ public class Services {
         return instance;
     }
 
+    /**
+     * get all list of services in this system
+     *
+     * @return List<SingleService>
+     */
     public List<SingleService> getListOfServices() {
         if (Os.i().isWindows()) {
             return this.getListServiceWindowsByCMD("wmic service get name,Caption,StartMode,started,ProcessID,PathName,DisplayName,Status,AcceptStop,state");
@@ -36,6 +41,11 @@ public class Services {
         }
     }
 
+    /**
+     * get all list of services stopped in this system
+     *
+     * @return List<SingleService>
+     */
     public List<SingleService> getListOfServicesStopped() {
         if (Os.i().isWindows()) {
             return this.getListServiceWindowsByCMD("wmic service where state=\"Stopped\" get name,Caption,StartMode,started,ProcessID,PathName,DisplayName,Status,AcceptStop,state");
@@ -44,6 +54,11 @@ public class Services {
         }
     }
 
+    /**
+     * get all list of services runnung in this system
+     *
+     * @return List<SingleService>
+     */
     public List<SingleService> getListOfServicesRunning() {
         if (Os.i().isWindows()) {
             return this.getListServiceWindowsByCMD("wmic service where state=\"Running\" get name,Caption,StartMode,started,ProcessID,PathName,DisplayName,Status,AcceptStop,state");

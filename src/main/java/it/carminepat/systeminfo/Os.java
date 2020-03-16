@@ -5,7 +5,9 @@ import it.carminepat.systeminfo.utils.CommandLine;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 import lombok.Getter;
@@ -62,6 +64,30 @@ public class Os {
         this.lastBootTime = this.initLastBootTime();
     }
 
+    public String getEnvironmentVariable(String s) {
+        if (s != null && !"".equals(s)) {
+            return System.getenv(s);
+        }
+        return "";
+    }
+
+    public Map<String, String> getEnvironmentVariables(String s) {
+        if (s != null && !"".equals(s)) {
+            return System.getenv();
+        }
+        return new HashMap<String, String>();
+    }
+
+    //TODO gestione backup vecchia variabile se esiste
+    public void setEnvironmentVariable(String key, String value) {
+        if (key != null && !"".equals(key) && value != null && !"".equals(value)) {
+            if (value.contains(" ")) {
+                value = String.format("\"%s\"", value);
+            }
+            CommandLine.i().getResultOfExecution(String.format("setx %s %s", key, value));
+        }
+    }
+
     private String initHostName() {
         try {
             return InetAddress.getLocalHost().getHostName();
@@ -73,6 +99,7 @@ public class Os {
 
     /**
      * serial number of OS (operating system)
+     *
      * @return String
      */
     private String initSerialNumber() {
@@ -88,6 +115,7 @@ public class Os {
 
     /**
      * UUID of hardware of machine
+     *
      * @return String
      */
     private String initHardwareUUID() {
@@ -103,6 +131,7 @@ public class Os {
 
     /**
      * date about last boot time
+     *
      * @return String
      */
     private String initLastBootTime() {
@@ -135,6 +164,38 @@ public class Os {
     public String getFullName() {
         String fn = String.format("%s %s", this.name, this.version);
         return fn;
+    }
+
+    public void restart() {
+        if (Os.i().isWindows()) {
+            CommandLine.i().getResultOfExecution("shutdown /r");
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet for this od");
+        }
+    }
+
+    public void restartAfterSeconds(int seconds) {
+        if (Os.i().isWindows()) {
+            CommandLine.i().getResultOfExecution("shutdown /r -t " + seconds);
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet for this od");
+        }
+    }
+
+    public void shutdown() {
+        if (Os.i().isWindows()) {
+            CommandLine.i().getResultOfExecution("shutdown /s");
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet for this od");
+        }
+    }
+
+    public void shutdownAfterSeconds(int seconds) {
+        if (Os.i().isWindows()) {
+            CommandLine.i().getResultOfExecution("shutdown /s -t " + seconds);
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet for this od");
+        }
     }
 
     @JsonIgnore
