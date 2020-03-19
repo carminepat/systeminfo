@@ -64,6 +64,7 @@ public class Os {
         this.lastBootTime = this.initLastBootTime();
     }
 
+    @JsonIgnore
     public String getEnvironmentVariable(String s) {
         if (s != null && !"".equals(s)) {
             return System.getenv(s);
@@ -71,20 +72,36 @@ public class Os {
         return "";
     }
 
-    public Map<String, String> getEnvironmentVariables(String s) {
-        if (s != null && !"".equals(s)) {
-            return System.getenv();
-        }
-        return new HashMap<String, String>();
+    @JsonIgnore
+    public Map<String, String> getEnvironmentVariables() {
+        return System.getenv();
     }
 
-    //TODO gestione backup vecchia variabile se esiste
+    //TODO backup old environment
+    @JsonIgnore
     public void setEnvironmentVariable(String key, String value) {
         if (key != null && !"".equals(key) && value != null && !"".equals(value)) {
             if (value.contains(" ")) {
                 value = String.format("\"%s\"", value);
             }
             CommandLine.i().getResultOfExecution(String.format("setx %s %s", key, value));
+        }
+    }
+
+    //TODO backup old environment
+    @JsonIgnore
+    public void addToEnvironmentVariable(String key, String value) {
+        if (key != null && !"".equals(key) && value != null && !"".equals(value)) {
+            String oldValue = this.getEnvironmentVariable(key);
+            if (oldValue != null && !"".equals(oldValue)) {
+                oldValue = oldValue + ";" + value;
+            } else {
+                oldValue = value;
+            }
+            if (oldValue.contains(" ")) {
+                oldValue = String.format("\"%s\"", oldValue);
+            }
+            CommandLine.i().getResultOfExecution(String.format("setx %s %s", key, oldValue));
         }
     }
 

@@ -14,8 +14,7 @@ All class implement singleton pattern. For example, call instance of **Os** (ope
 All object is ready for json format translation.
 
     ObjectMapper mapper = new ObjectMapper();
-    String jsonOs = mapper.writeValueAsString(Os.i());
-    System.out.println(jsonOs);
+	System.out.println(mapper.writeValueAsString(Os.i()));
 
 ## Information
  1. Os (mac,windows)
@@ -46,6 +45,16 @@ All object is ready for json format translation.
     "lastBootTime":"08/03/2020 10:50:00",  
     "fullName":"Mac OS X 10.15.3" 
     }
+Other method of class:
+
+ - String getEnvironmentVariable(String s)
+ - Map<String, String> getEnvironmentVariables()
+ - setEnvironmentVariable(String key, String value)
+ - addToEnvironmentVariable(String key, String value)
+ - void restart()
+ - void restartAfterSeconds(int seconds)
+ - void shutdown()
+ - void shutdownAfterSeconds(int seconds)
 
 ## Cpu information
 #### (json format)
