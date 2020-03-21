@@ -1,5 +1,6 @@
 package it.carminepat.systeminfo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.carminepat.systeminfo.utils.CommandLine;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class Program {
 
-    //wmic product list full /format:csv
+    @JsonIgnore
     private static String csv_separator_win = ",";
     private List<SingleProgram> programs;
 
@@ -55,6 +56,34 @@ public class Program {
             throw new UnsupportedOperationException("Not implemented yet for this OS");
         }
         return lista;
+    }
+
+    public void restartNetwork() {
+        if (Os.i().isWindows()) {
+            try {
+                CommandLine.i().getResultOfExecution("ipconfig /release");
+                Thread.sleep(30 * 1000);
+                CommandLine.i().getResultOfExecution("ipconfig /renew");
+            } catch (Exception e) {
+                System.err.println("Errore durante il riavvio della rete " + e);
+            } finally {
+                CommandLine.i().getResultOfExecution("ipconfig /renew");
+            }
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet for this OS");
+        }
+    }
+
+    public void flushDNS() {
+        if (Os.i().isWindows()) {
+            try {
+                CommandLine.i().getResultOfExecution("ipconfig /flushdns ");
+            } catch (Exception e) {
+                System.err.println("Errore durante il riavvio della rete " + e);
+            }
+        } else {
+            throw new UnsupportedOperationException("Not implemented yet for this OS");
+        }
     }
 
 }

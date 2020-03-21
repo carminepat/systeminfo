@@ -17,16 +17,16 @@ All object is ready for json format translation.
 	System.out.println(mapper.writeValueAsString(Os.i()));
 
 ## Information
- 1. [Os (mac,windows)](#1-Os-information)
+ 1. Os (mac,windows)
  2. CPU (mac,windows)
  3. Memory (windows)
- 4. Net (not-implemented-yet)
+ 4. Net (windows)
  5. Disk (windows)
  6. Services (windows)
  7. Process (windows)
  8. Program (windows)
 
-## 1 - Os information
+## 1)  Os information
 ####  (json format)
 
     {
@@ -80,7 +80,29 @@ Other method of class:
 	"virtualInUse":"11,08 GB"  
 	}
 ## 4) Net information
-Not implemented yet.
+
+    {
+       "localIpAddress":"11x.168.0.x",
+       "publicIP":"xxx.xxx.xxx.xxx",
+       "listNetwork":[
+          {
+             "description":"Broadcom NetXtreme Gigabit Ethernet",
+             "deviceId":1,
+             "macAddress":"XX:XX:XX:XX:XX:XX",
+             "manufacturer":"Broadcom",
+             "name":"Broadcom NetXtreme Gigabit Ethernet",
+             "netConnectionId":"Ethernet",
+             "productName":"Broadcom NetXtreme Gigabit Ethernet",
+             "serviceName":"b57nd60a"
+          }
+       ]
+    }
+    
+   Other method:
+   
+
+ - ### void restartNetwork()
+ - ### void flushDNS()
 
 ## 5) Disk information
 #### (json format)

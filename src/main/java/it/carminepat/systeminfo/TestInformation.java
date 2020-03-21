@@ -27,6 +27,7 @@ public class TestInformation {
 //        System.out.println(jsonServices);
         //Os.i().setEnvironmentVariable("UTILS_PUBLISYS", "C:\\progetti\\aziendali\\publisys");
         System.out.println(mapper.writeValueAsString(Program.i().getPrograms()));
+        System.out.println(mapper.writeValueAsString(Net.i()));
     }
 
 }
