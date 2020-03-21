@@ -17,15 +17,16 @@ All object is ready for json format translation.
 	System.out.println(mapper.writeValueAsString(Os.i()));
 
 ## Information
- 1. Os (mac,windows)
+ 1. [Os (mac,windows)](#1-Os-information)
  2. CPU (mac,windows)
  3. Memory (windows)
  4. Net (not-implemented-yet)
  5. Disk (windows)
  6. Services (windows)
  7. Process (windows)
+ 8. Program (windows)
 
-## Os information
+## 1 - Os information
 ####  (json format)
 
     {
@@ -56,7 +57,7 @@ Other method of class:
  - void shutdown()
  - void shutdownAfterSeconds(int seconds)
 
-## Cpu information
+## 2) Cpu information
 #### (json format)
 
     {
@@ -67,7 +68,7 @@ Other method of class:
 	"l3cache":"8 MB",  
 	"l2cache":"256 KB"  
 	}
-## Memory information
+## 3) Memory information
 #### (json format)
 
     {
@@ -78,8 +79,10 @@ Other method of class:
 	"virtualFree":"1,52 GB",  
 	"virtualInUse":"11,08 GB"  
 	}
+## 4) Net information
+Not implemented yet.
 
-## Disk information
+## 5) Disk information
 #### (json format)
 
 	{"disks":[{
@@ -99,7 +102,60 @@ Other method of class:
 	"freeSpace":"3,52 GB",  
 	"size":"7,48 GB" }]  
 	}
-## Process information
+
+## 6) Service information
+Method Services.i().getListOfServices(); return a List of SingleService object.
+SingleProcess object is composed from this property: 
+
+    boolean acceptStop;
+    String caption;
+    String displayName;
+    String name;
+    String pathName;
+    int PID;
+    boolean started;
+    String startMode;
+    String status;
+    String state;
+
+### getListOfServices()
+
+#### (json format)
+
+    [{
+    "acceptStop":false,  
+    "caption":"Servizio router AllJoyn",  
+    "displayName":"Servizio router AllJoyn",  
+    "name":"AJRouter",  
+    "pathName":"C:\\Windows\\system32\\svchost.exe -k LocalServiceNetworkRestricted -p",  
+    "started":false,  
+    "startMode":"Manual",  
+    "status":"OK",  
+    "state":"Stopped",  
+    "pid":0  
+    },  {
+    "acceptStop":false,  
+    "caption":"Servizio Gateway di livello applicazione",  
+    "displayName":"Servizio Gateway di livello applicazione",  
+    "name":"ALG",  
+    "pathName":"C:\\Windows\\System32\\alg.exe",  
+    "started":false,  
+    "startMode":"Manual",  
+    "status":"OK",  
+    "state":"Stopped",  
+    "pid":0  
+    }, {...} ...]
+### getListOfServicesStopped()
+### getListOfServicesRunning()
+### getListOfServicesAcceptStop()
+### getListOfServicesNotAcceptStop()
+### getServiceByName(String name)
+### getServiceByPID(int PID)
+### startService(String name)
+### stopService(String name)
+### changeStartMode(String name, StartModeType MODE)
+
+## 7) Process information
 ### getListOfProcess();
 Method Process.i().getListOfProcess(); return a List of SingleProcess object.
 This List is ordered by memory use desc.
@@ -169,55 +225,30 @@ with this method: Process.i().getListOfProcessMemoryGTMb(MegaBytesNumber); filte
 ### killTask(PID)
 with this method: Process.i().killTask(PID); kill process with specified PID
 
-## Service information
-Method Services.i().getListOfServices(); return a List of SingleService object.
-SingleProcess object is composed from this property: 
-
-    boolean acceptStop;
-    String caption;
-    String displayName;
-    String name;
-    String pathName;
-    int PID;
-    boolean started;
-    String startMode;
-    String status;
-    String state;
-
-### getListOfServices()
-
+## 8) Program information
+information about software application installed in OS.
 #### (json format)
 
-    [{
-    "acceptStop":false,  
-    "caption":"Servizio router AllJoyn",  
-    "displayName":"Servizio router AllJoyn",  
-    "name":"AJRouter",  
-    "pathName":"C:\\Windows\\system32\\svchost.exe -k LocalServiceNetworkRestricted -p",  
-    "started":false,  
-    "startMode":"Manual",  
-    "status":"OK",  
-    "state":"Stopped",  
-    "pid":0  
-    },  {
-    "acceptStop":false,  
-    "caption":"Servizio Gateway di livello applicazione",  
-    "displayName":"Servizio Gateway di livello applicazione",  
-    "name":"ALG",  
-    "pathName":"C:\\Windows\\System32\\alg.exe",  
-    "started":false,  
-    "startMode":"Manual",  
-    "status":"OK",  
-    "state":"Stopped",  
-    "pid":0  
-    }, {...} ...]
-### getListOfServicesStopped()
-### getListOfServicesRunning()
-### getListOfServicesAcceptStop()
-### getListOfServicesNotAcceptStop()
-### getServiceByName(String name)
-### getServiceByPID(int PID)
-### startService(String name)
-### stopService(String name)
-### changeStartMode(String name, StartModeType MODE)
+    [{    
+    "description":"Java 7 Update 79 (64-bit)",  
+    "installationDate":"10/03/2020",  
+    "installLocation":"C:\\Program Files\\Java\\jre7\\",  
+    "installState":"5",  
+    "name":"Java 7 Update 79 (64-bit)",  
+    "packageCache":"C:\\Windows\\Installer\\46785.msi",  
+    "vendor":"Oracle",  
+    "version":"7.0.790",  
+    "identifyingNumber":"{26A24AE4-039D-4CA4-87B4-2F06417079FF}"  
+    
+    },{    
+    "description":"Java 8 Update 73 (64-bit)",  
+    "installationDate":"13/03/2020",  
+    "installLocation":"C:\\Program Files\\Java\\jre1.8.0_73\\",  
+    "installState":"5",  
+    "name":"Java 8 Update 73 (64-bit)",  
+    "packageCache":"C:\\Windows\\Installer\\520de2.msi",  
+    "vendor":"Oracle Corporation",  
+    "version":"8.0.730.2",  
+    "identifyingNumber":"{26A24AE4-039D-4CA4-87B4-2F86418073F0}"      
+    }, {...}, ...]
 

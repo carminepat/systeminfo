@@ -25,7 +25,8 @@ public class TestInformation {
 //        System.out.println(jsonProcess);
 //        String jsonServices = mapper.writeValueAsString(Services.i().getListOfServices());
 //        System.out.println(jsonServices);
-        Os.i().setEnvironmentVariable("UTILS_PUBLISYS", "C:\\progetti\\aziendali\\publisys");
+        //Os.i().setEnvironmentVariable("UTILS_PUBLISYS", "C:\\progetti\\aziendali\\publisys");
+        System.out.println(mapper.writeValueAsString(Program.i().getPrograms()));
     }
-    
+
 }

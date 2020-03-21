@@ -12,19 +12,19 @@ import java.util.regex.Pattern;
  * @author carminepat
  */
 public class CommandLine {
-    
+
     private static CommandLine instance = null;
-    
+
     public static CommandLine i() {
         if (instance == null) {
             instance = new CommandLine();
         }
         return instance;
     }
-    
+
     private CommandLine() {
     }
-    
+
     ;
     
     public String getResultOfExecution(String command) {
@@ -47,7 +47,7 @@ public class CommandLine {
         }
         return result;
     }
-    
+
     public String clearResultWindows(String result, String element) {
         result = result.replaceAll("\r\n", " ")
                 .replace("\\s{2,}", " ")
@@ -56,12 +56,12 @@ public class CommandLine {
                 .trim();
         return result;
     }
-    
+
     public String clearResultWindowsWithLine(String result, String element) {
         result = result.replace(element, "").trim();
         return result;
     }
-    
+
     public List<String> getStringInLines(String s) {
         List<String> l = new ArrayList<>();
         if (s != null && !"".equals(s)) {
@@ -74,7 +74,7 @@ public class CommandLine {
         }
         return l;
     }
-    
+
     public String clearResultMac(String result, String regex, int patternType) {
         Pattern p = Pattern.compile(regex, patternType);
         Matcher matcher = p.matcher(result);
