@@ -184,7 +184,7 @@ public class Os {
 
     public void restart() {
         if (Os.i().isWindows()) {
-            CommandLine.i().getResultOfExecution("shutdown /r");
+            CommandLine.i().getResultOfExecution("shutdown /r /f");
         } else {
             throw new UnsupportedOperationException("Not implemented yet for this od");
         }
